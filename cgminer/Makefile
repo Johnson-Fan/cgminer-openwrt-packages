@@ -46,6 +46,10 @@ ifeq ($(CONFIG_CGMINER_AVALONLC3),y)
 	PKG_VERSION:=git-$(shell git ls-remote https://github.com/Canaan-Creative/cgminer avalonlc3 | cut -f1 | cut -c1-7)
 	PKG_REV:=avalonlc3
 endif
+ifeq ($(CONFIG_CGMINER_AVALON10),y)
+	PKG_VERSION:=git-$(shell git ls-remote https://github.com/Johnson-Fan/cgminer avalon10 | cut -f1 | cut -c1-7)
+	PKG_REV:=avalon10
+endif
 
 PKG_RELEASE:=1
 PKG_INSTALL:=1
@@ -77,6 +81,9 @@ endif
 ifeq ($(CONFIG_CGMINER_AVALONLC3),y)
 	PKG_SOURCE_URL:=git://github.com/Canaan-Creative/cgminer.git
 endif
+ifeq ($(CONFIG_CGMINER_AVALON10),y)
+	PKG_SOURCE_URL:=git://github.com/Johnson-Fan/cgminer.git
+endif
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_SUBDIR:=$(PKG_NAME)-$(PKG_VERSION)
 PKG_SOURCE_VERSION:=$(PKG_REV)
@@ -91,7 +98,7 @@ define Package/cgminer
 	TITLE:=cgminer
 	URL:=https://github.com/ckolivas/cgminer
 ifeq ($(CONFIG_TARGET_brcm2708_RaspberryPi),)
-	DEPENDS:=+libcurl +libpthread +jansson +udev +libusb-1.0
+	DEPENDS:=+libcurl +libpthread +jansson +udev +libusb-1.0 +zlib
 else
 	DEPENDS:=+libcurl +libpthread +jansson +udev +libusb-1.0 +libncurses
 endif
@@ -142,6 +149,9 @@ endif
 ifeq ($(CONFIG_CGMINER_AVALONLC3),y)
 	CONFIGURE_ARGS += --enable-avalonlc3 CFLAGS=-DSTRATUM_USER_AGENT=\\\"a9\\\"
 endif
+ifeq ($(CONFIG_CGMINER_AVALON10),y)
+	CONFIGURE_ARGS += --enable-avalon10 CFLAGS=-DSTRATUM_USER_AGENT=\\\"a10\\\"
+endif
 
 ifeq ($(CONFIG_TARGET_brcm2708_RaspberryPi),)
 	CONFIGURE_ARGS += --without-curses
@@ -150,7 +160,7 @@ endif
 define Build/Compile
 	$(call Build/Compile/Default)
 	(cd $(PKG_BUILD_DIR) && \
-	 $(TARGET_CC) -Icompat/jansson-2.6/src `pkg-config --cflags libusb-1.0` api-example.c -o cgminer-api;)
+	 $(TARGET_CC) -Icompat/jansson-2.9/src `pkg-config --cflags libusb-1.0` api-example.c -o cgminer-api;)
 endef
 
 define Package/cgminer/install
@@ -220,6 +230,12 @@ ifeq ($(CONFIG_CGMINER_AVALONLC3),y)
 	$(INSTALL_BIN) $(FILES_DIR)/cgminer.avalonlc3.init           $(1)/etc/init.d/cgminer
 	$(CP)          $(FILES_DIR)/cgminer.avalonlc3.config         $(1)/etc/config/cgminer
 	$(INSTALL_BIN)          $(FILES_DIR)/mm-avalonlc3-upgrade             $(1)/usr/bin/mmupgrade
+endif
+ifeq ($(CONFIG_CGMINER_AVALON10),y)
+	$(INSTALL_BIN) $(FILES_DIR)/cgminer-avalon10-monitor        $(1)/usr/bin/cgminer-monitor
+	$(INSTALL_BIN) $(FILES_DIR)/cgminer.avalon10.init           $(1)/etc/init.d/cgminer
+	$(CP)          $(FILES_DIR)/cgminer.avalon10.config         $(1)/etc/config/cgminer
+	$(INSTALL_BIN)          $(FILES_DIR)/mm-avalon10-upgrade             $(1)/usr/bin/mmupgrade
 endif
 endef
 

@@ -28,3 +28,6 @@ config CGMINER_AVALON911
 config CGMINER_AVALONLC3
 	bool "Enable Avalonlc3 support"
 	default n
+config CGMINER_AVALON10
+	bool "Enable Avalon10 support"
+	default n
