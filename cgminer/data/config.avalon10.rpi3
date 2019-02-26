@@ -4,7 +4,13 @@
 #
 CONFIG_TARGET_brcm2708=y
 CONFIG_TARGET_brcm2708_bcm2710=y
-CONFIG_TARGET_brcm2708_bcm2710_RaspberryPi_3=y
+CONFIG_TARGET_brcm2708_bcm2710_DEVICE_rpi-3=y
+
+#
+# Image Options
+#
+CONFIG_BRCM2708_SD_BOOT_PARTSIZE=20
+CONFIG_TARGET_ROOTFS_PARTSIZE=48
 
 #
 # Kernel
@@ -15,11 +21,6 @@ CONFIG_PACKAGE_kmod-lib-crc-ccitt=y
 # Rootfs
 #
 CONFIG_TARGET_ROOTFS_TARGZ=y
-
-#
-# OpenWrt etc
-#
-# CONFIG_BUILD_PATENTED is not set
 
 #
 # Busybox
@@ -52,7 +53,6 @@ CONFIG_CGMINER_AVALON10=y
 CONFIG_PACKAGE_libncurses=y
 
 CONFIG_PACKAGE_coreutils=y
-CONFIG_PACKAGE_sed=y
 
 CONFIG_PACKAGE_mm-tools=y
 CONFIG_MM_TOOLS_SOFT_CRC=y
@@ -69,6 +69,7 @@ CONFIG_PACKAGE_zlib=y
 CONFIG_PACKAGE_ca-certificates=y
 
 CONFIG_OPENSSL_WITH_EC=y
+
 #
 # Filesystem
 #
