@@ -4,3 +4,6 @@ config MM_TOOLS_SOFT_CRC
 config MM_TOOLS_FLASH_LAYOUT_2M
 	bool "Enable flash layout 2m"
 	default n
+config MM_TOOLS_MM_TYPE_LEN_5BYTE
+	bool "Enable mm type len 5byte"
+	default n
