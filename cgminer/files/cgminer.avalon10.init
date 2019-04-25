@@ -18,8 +18,6 @@ start() {
 	local _pool3pw
 
 	local _vo
-	local _fan_min
-	local _fan_max
 
 	local _aa
 	local _mo
@@ -39,8 +37,6 @@ start() {
 	config_get _pool3pw default pool3pw
 
 	config_get _vo default voltage_level_offset
-	config_get _fan_min default fan_min
-	config_get _fan_max default fan_max
 
 	config_get _aa default api_allow
 	config_get _mo default more_options
@@ -61,8 +57,7 @@ start() {
 	    VOLT_OFFSET="--avalon10-voltage-level-offset $_vo"
 	fi
 
-	AVA9_OPTIONS=" --avalon10-fan $_fan_min-$_fan_max $VOLT_OFFSET"
-	PARAMS=" --lowmem $AVA9_OPTIONS $POOL1 $POOL2 $POOL3 --api-allow $_aa --api-listen $_mo --real-quiet"
+	PARAMS=" --lowmem $VOLT_OFFSET $POOL1 $POOL2 $POOL3 --api-allow $_aa --api-listen $_mo --real-quiet"
 
 	NTP_POOL="-p 0.openwrt.pool.ntp.org -p 1.openwrt.pool.ntp.org  -p 3.openwrt.pool.ntp.org -p 4.openwrt.pool.ntp.org"
 	ASIA="-p 1.cn.pool.ntp.org -p 3.asia.pool.ntp.org -p 2.asia.pool.ntp.org"
@@ -94,5 +89,5 @@ start() {
 
 stop() {
 	start-stop-daemon -K -n $APP -p $PID_FILE -s TERM
-	sleep 2
+	sleep 4
 }
